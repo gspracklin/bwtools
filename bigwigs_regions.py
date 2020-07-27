@@ -3,6 +3,10 @@ import pandas as pd
 import bioframe as bf
 import bbi
 
+def read_bed(bed):
+    df_bed = pd.read_csv(bed, sep='\t', header=None, usecols=[0,1,2], names=['chrom', 'start', 'end'])
+    return df_bed
+
 def regions_mean(bigwig, bed):
     stack={}
     
@@ -53,7 +57,7 @@ def create_plotarray(stack, cols, bed):
 
 def plot(ndarray, cols, bed, output=None):
     import matplotlib.pyplot as plt
-    
+
     fig, ax = plt.subplots()
     im = ax.imshow(ndarray)
 
