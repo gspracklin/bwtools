@@ -1,9 +1,19 @@
+#!/usr/bin/env python
 import numpy as np
 import pandas as pd
 import bioframe as bf
 import bbi
 
 def regions_mean(bigwig, bed):
+    """Take list of bigwigs and bedfiles are calculate average signal
+
+    Args:
+        bigwig ([type]): bigwig file (chrom, start, stop, value)
+        bed ([type]): bed file (chrom, start, end), only uses first 3 columns
+
+    Returns:
+        stack: dictionary of {bigwig, bed : mean}
+    """
     stack={}
     
     for i in bed:
@@ -13,7 +23,17 @@ def regions_mean(bigwig, bed):
             stack[i,j] = np.nanmean(bbi.stackup(j, df['0'], df['1'], df['2'], bins=1))
     return stack
 
-def df_regions_mean(df, cols, bed):    
+def df_regions_mean(df, cols, bed): 
+    """Calculates mean on two dataframes
+
+    Args:
+        df (dataframe): bigwig dataframe
+        cols (list): list of headers to use
+        bed (dataframe): chrom, start, end required
+
+    Returns:
+        stack: dictionary of means
+    """
     stack={}
     for i in bed:
 
@@ -25,19 +45,39 @@ def df_regions_mean(df, cols, bed):
         
     return stack
 
-def df_regions_mean_list(df, cols, bed):    
+def df_regions_mean_list(df, cols, bed):
+    """Create list of means
+
+    Args:
+        df (pandas dataframe): requires chrom, start, end
+        cols (list): column headers to use for overlap
+        bed (list): list of bedfiles
+
+    Returns:
+        list: ndarray of overlaps
+    """
     listoflists=[]
     for i in bed:
         a=[]
         df_bed = pd.read_csv(i, sep='\t', header=None, usecols=[0,1,2], names=['chrom', 'start', 'end'])
         overlap = bf.overlap(df_bed, df)
-        
+        df_regions_mean
         for j in cols:
             a.append(overlap[j+'_2'].mean())
         listoflists.append(a)
     return listoflists
 
-def create_plotarray(stack, cols, bed):
+def create_plotarray(stack, cols, bed): 
+    """Converts dictionary to ndarray for plotting
+
+    Args:
+        stack (dictionary): dictionary from regions
+        cols (list): all the headers or bigwigs used
+        bed (list): list of bedfiles used
+
+    Returns:
+        array : numpy ndarray
+    """
     b=[]
     num_cols = len(cols)
     num_rows = len(bed)
@@ -52,6 +92,14 @@ def create_plotarray(stack, cols, bed):
     return np.array(b)
 
 def plot(ndarray, cols, bed, output=None):
+    """Create matplotlib plot
+
+    Args:
+        ndarray (ndarray): list of means (bigwigs/rows, bedfile/columns)
+        cols (list): name for the columns   
+        bed (list): name for the rows       
+        output (file name, optional): 'filename.pdf' (or png). Defaults to None.
+    """
     import matplotlib.pyplot as plt
     
     fig, ax = plt.subplots()
