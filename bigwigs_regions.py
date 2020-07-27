@@ -1,4 +1,7 @@
+import numpy as np
 import pandas as pd
+import bioframe as bf
+import bbi
 
 def regions_mean(bigwig, bed):
     stack={}
@@ -8,7 +11,6 @@ def regions_mean(bigwig, bed):
         
         for j in bigwig:
             stack[i,j] = np.nanmean(bbi.stackup(j, df['0'], df['1'], df['2'], bins=1))
-
     return stack
 
 def df_regions_mean(df, cols, bed):    
@@ -50,8 +52,10 @@ def create_plotarray(stack, cols, bed):
     return np.array(b)
 
 def plot(ndarray, cols, bed, output=None):
+    import matplotlib.pyplot as plt
+    
     fig, ax = plt.subplots()
-    im = ax.imshow(y)
+    im = ax.imshow(ndarray)
 
     # We want to show all ticks...
     ax.set_xticks(np.arange(len(cols)))
