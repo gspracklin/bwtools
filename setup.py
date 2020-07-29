@@ -6,7 +6,7 @@ import re
 
 from setuptools import setup, find_packages
 from setuptools.extension import Extension
-from Cython.Build import cythonize
+#from Cython.Build import cythonize
 import numpy as np
 
 
@@ -52,7 +52,6 @@ def get_requirements(path):
 
 
 setup_requires = [
-    'cython',
     'numpy',
 ]
 

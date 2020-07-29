@@ -1,11 +1,6 @@
 bioframe<0.1.0
 click>=7
-cython
-cytoolz
 matplotlib
-multiprocess
 numpy
 pandas
-scikit-learn
-scipy
 pomegranate
