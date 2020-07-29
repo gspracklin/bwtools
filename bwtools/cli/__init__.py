@@ -1,13 +1,6 @@
-# -*- coding: utf-8 -*-
-from __future__ import division, print_function
 import click
 import sys
 from .. import __version__
-
-
-# Monkey patch
-click.core._verify_python3_env = lambda: None
-
 
 CONTEXT_SETTINGS = {
     "help_option_names": ["-h", "--help"],

@@ -5,21 +5,17 @@ import os
 import re
 
 from setuptools import setup, find_packages
-from setuptools.extension import Extension
-#from Cython.Build import cythonize
-import numpy as np
 
-
-classifiers = """\
-    Development Status :: 4 - Beta
-    Programming Language :: Python
-    Programming Language :: Python :: 3
-    Programming Language :: Python :: 3.4
-    Programming Language :: Python :: 3.5
-    Programming Language :: Python :: 3.6
-    Programming Language :: Python :: 3.7
-    Programming Language :: Python :: 3.8
-"""
+# classifiers = """\
+#     Development Status :: 4 - Beta
+#     Programming Language :: Python
+#     Programming Language :: Python :: 3
+#     Programming Language :: Python :: 3.4
+#     Programming Language :: Python :: 3.5
+#     Programming Language :: Python :: 3.6
+#     Programming Language :: Python :: 3.7
+#     Programming Language :: Python :: 3.8
+# """
 
 
 def _read(*parts, **kwargs):
@@ -51,25 +47,7 @@ def get_requirements(path):
     ]
 
 
-setup_requires = [
-    'numpy',
-]
-
-
 install_requires = get_requirements('requirements.txt')
-
-
-# extensions = [
-#     Extension(
-#         "cooltools.io.fastsavetxt", ["cooltools/io/fastsavetxt.pyx"],
-#         include_dirs=[np.get_include()]
-#     ),
-#     Extension(
-#         "cooltools.lib._numutils", ["cooltools/lib/_numutils.pyx"],
-#         include_dirs=[np.get_include()]
-#     ),
-# ]
-
 
 packages = find_packages()
 
@@ -86,12 +64,9 @@ setup(
     keywords=['genomics', 'bioinformatics', 'Hi-C', 'analysis', 'cooler'],
     url='https://github.com/gspracklin/bwtools',
     zip_safe=False,
-    classifiers=[s.strip() for s in classifiers.split('\n') if s],
+    # classifiers=[s.strip() for s in classifiers.split('\n') if s],
 
     packages=packages,
-#    ext_modules=cythonize(extensions),
-    include_dirs=[np.get_include()],
-    setup_requires=setup_requires,
     install_requires=install_requires,
     entry_points={
         'console_scripts': [

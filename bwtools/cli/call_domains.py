@@ -49,7 +49,7 @@ from . import cli
 def call_domains(
     input, num_states, genome, cmap, output 
 ):
-    """Call domains using HMMs
+    """Call domains using HMMs.
 
     Args:
         input : bigwig file

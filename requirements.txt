@@ -1,6 +1,8 @@
-bioframe<0.1.0
+bioframe>=0.1.0
 click>=7
 matplotlib
 numpy
 pandas
 pomegranate
+pybbi
+cytoolz
