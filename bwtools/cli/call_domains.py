@@ -1,4 +1,5 @@
 from .. import hmm
+import sys
 
 import click
 #from .util import TabularFilePath, sniff_for_header
@@ -6,9 +7,10 @@ from . import cli
 
 
 @cli.command()
-@click.argument(
+@click.option(
    "--input", "-i",
     help="Bigwig file to call domains on",
+    type=str,
     #type=TabularFilePath(exists=True, default_column_index=4),
     required=True,
 )
@@ -50,15 +52,8 @@ def call_domains(
     input, num_states, genome, cmap, output 
 ):
     """Call domains using HMMs.
-
-    Args:
-        input : bigwig file
-        num_states : number of HMM states           
-        genome ([type]): [description]
-        cmap ([type]): [description]
-        output ([type]): [description]
     """     
-    print("Starting HMM on " + input)
+    print("Starting HMM on " + input, file=sys.stderr)
     chroms = hmm.get_chroms(genome)
     df = hmm.create_df(inputfile=input, chroms=chroms)
     df = hmm.hmm(df, num_states)
