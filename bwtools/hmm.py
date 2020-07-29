@@ -1,9 +1,3 @@
-"""
-This is a wrapper script to run HMMs (pomegranate or hmmlearn)
-with a few bells and whistles
-v1.3
-"""
-#!/bin/env python
 import argparse
 import bbi
 import numpy as np

@@ -53,12 +53,7 @@ def cli(verbose, debug):
 
 
 from . import (
-    dump_cworld,
-    diamond_insulation,
-    compute_expected,
-    compute_saddle,
-    call_dots,
-    call_compartments,
-    genome,
-    random_sample,
+    call_domains,
+    compute_regions,
+
 )
