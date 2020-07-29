@@ -4,6 +4,10 @@ import pandas as pd
 import bioframe as bf
 import bbi
 
+def read_bed(bed):
+    df_bed = pd.read_csv(bed, sep='\t', header=None, usecols=[0,1,2], names=['chrom', 'start', 'end'])
+    return df_bed
+
 def regions_mean(bigwig, bed):
     """Take list of bigwigs and bedfiles are calculate average signal
 
@@ -101,7 +105,7 @@ def plot(ndarray, cols, bed, output=None):
         output (file name, optional): 'filename.pdf' (or png). Defaults to None.
     """
     import matplotlib.pyplot as plt
-    
+
     fig, ax = plt.subplots()
     im = ax.imshow(ndarray)
 
