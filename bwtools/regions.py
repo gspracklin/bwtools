@@ -21,7 +21,7 @@ def regions_mean(bigwig, bed):
     stack={}
     
     for i in bed:
-        df = pd.read_csv({i}, sep='\t', header=None, usecols=[0,1,2])
+        df = pd.read_csv(i, sep='\t', header=None, usecols=[0,1,2])
         
         for j in bigwig:
             stack[i,j] = np.nanmean(bbi.stackup(j, df['0'], df['1'], df['2'], bins=1))

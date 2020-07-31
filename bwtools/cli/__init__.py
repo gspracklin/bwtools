@@ -49,6 +49,6 @@ def cli():
 
 from . import (
     call_domains,
-    #compute_regions,
+    compute_regions,
 
 )
