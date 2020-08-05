@@ -36,6 +36,10 @@ from . import cli
     type=str,
     required=True,
 )
+@click.argument('out', 
+                type=click.File('w'), 
+                default='-', 
+                required=False)
 
 def compute_regions(bigwig, bedfiles, plot=True,array=True):
     """Get mean value for regions from bigwig."""
@@ -44,7 +48,7 @@ def compute_regions(bigwig, bedfiles, plot=True,array=True):
     for i in bigwig:
         print(i)
     stack = regions.regions_mean(bigwig, bedfiles)
-    plotarray = regions.create_plotarray(stack, bigwig, bedfiles)
+    plotarray = regions.create_plotarray(stack, bigwig, bedfiles, file=out)
     if plot == True:
         plot(plotarray, bigwig, bedfiles, output=plot)
     return plotarray

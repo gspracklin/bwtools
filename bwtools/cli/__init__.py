@@ -50,5 +50,6 @@ def cli():
 from . import (
     call_domains,
     compute_regions,
+    read_input,
 
 )

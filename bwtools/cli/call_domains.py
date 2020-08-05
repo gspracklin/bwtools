@@ -5,15 +5,7 @@ import click
 #from .util import TabularFilePath, sniff_for_header
 from . import cli
 
-
 @cli.command()
-@click.option(
-   "--input", "-i",
-    help="Bigwig file to call domains on",
-    type=str,
-    #type=TabularFilePath(exists=True, default_column_index=4),
-    required=True,
-)
 @click.option(
     "--genome", "-g",
     help="Genome assembly for chrom sizes (i.e. hg38) ",
@@ -47,7 +39,10 @@ from . import cli
 #     is_flag=True,
 #     default=False
 # )
-
+@click.argument(
+    'bigwig',
+    type=str,
+)
 def call_domains(
     input, num_states, genome, cmap, output 
 ):
