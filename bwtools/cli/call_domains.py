@@ -1,8 +1,8 @@
 from .. import hmm
+import multiprocessing as mp
 import sys
 
 import click
-#from .util import TabularFilePath, sniff_for_header
 from . import cli
 
 @cli.command()
@@ -33,6 +33,18 @@ from . import cli
     type=str,
     required=True,
 )
+@click.option(
+    "--sparse", is_flag=True, 
+    help="Merge neigboring bins of the same state (reduce filesize, unequal binsize)",
+)
+@click.option(
+    "--nproc",
+    "-p",
+    help="Number of processes to split the work between."
+    "[default: 1, i.e. no process pool]",
+    default=1,
+    type=int,
+)
 # @click.option(
 #     "-v", "--verbose",
 #     help="Enable verbose output",
@@ -44,27 +56,32 @@ from . import cli
     type=str,
 )
 def call_domains(
-    input, num_states, genome, cmap, output 
+    input, num_states, genome, cmap, output, sparse, nproc,
 ):
     """Call domains using HMMs.
     """     
-    print("Starting HMM on " + input, file=sys.stderr)
     chroms = hmm.get_chroms(genome)
+
+    # execution details
+    if nproc > 1:
+        pool = mp.Pool(nproc)
+        map_ = pool.map
+    else:
+        map_ = map
+
+    #read and create dataframe from bigwig file    
     df = hmm.create_df(inputfile=input, chroms=chroms)
-    df = hmm.hmm(df, num_states)
-    print("Finished hmm!")
-    df_sparse =hmm.sparse(df)
+    
+    #HMM
+    for c in df.chrom:
+        print('Starting HMM on ', c)
+        df = hmm.hmm(df[c], num_states)
+        if sparse:
+            df_sparse = hmm.sparse(df)
+            return df_sparse
+        else:
+            return df
+
+    #write to file         
+    print("Starting to write to file")
     hmm.write_to_file(df_sparse, output, num_states, cmap=cmap)
-    # df_final=merge_different_hmmstates(df_sparse, cLAD=cLAD, open=open_state)
-    # df_final.to_csv(output+'_combined_state.bed', sep='\t', header=False, index=False)
-    # print("write first file")
-    # df_sparse[df_sparse["state"] == 0].to_csv(
-    #     output + "_0_state.bed", sep="\t", header=False, index=False
-    # )
-    # df_sparse[df_sparse["state"] == 1].to_csv(
-    #     output + "_1_state.bed", sep="\t", header=False, index=False
-    # )
-    # df_sparse[df_sparse["state"] == 2].to_csv(
-    #     output + "_2_state.bed", sep="\t", header=False, index=False
-    # )
-    print("Finished writing to file")

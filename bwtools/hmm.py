@@ -5,8 +5,6 @@ import pandas as pd
 import bioframe
 from pomegranate import HiddenMarkovModel, NormalDistribution
 import matplotlib.pyplot as plt
-import multiprocess
-
 
 def get_chroms(genome, ignoreXYMT=True):
     "Get list of chroms to analyze"
