@@ -60,28 +60,10 @@ def call_domains(
 ):
     """Call domains using HMMs.
     """     
+    print("Starting HMM on " + input, file=sys.stderr)
     chroms = hmm.get_chroms(genome)
-
-    # execution details
-    if nproc > 1:
-        pool = mp.Pool(nproc)
-        map_ = pool.map
-    else:
-        map_ = map
-
-    #read and create dataframe from bigwig file    
     df = hmm.create_df(inputfile=input, chroms=chroms)
-    
-    #HMM
-    for c in df.chrom:
-        print('Starting HMM on ', c)
-        df = hmm.hmm(df[c], num_states)
-        if sparse:
-            df_sparse = hmm.sparse(df)
-            return df_sparse
-        else:
-            return df
-
-    #write to file         
-    print("Starting to write to file")
+    df = hmm.hmm(df, num_states)
+    print("Finished hmm!")
+    df_sparse =hmm.sparse(df)
     hmm.write_to_file(df_sparse, output, num_states, cmap=cmap)
