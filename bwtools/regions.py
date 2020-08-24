@@ -71,11 +71,7 @@ def df_regions_mean_list(df, cols, bed):
         listoflists.append(a)
     return listoflists
 
-def cp2(stack, bigwig):
-    nd=[]
-    for i in bigwig:
-        nd.append(lookup(stack, i))
-    return nd
+
     
 def create_plotarray(stack, bigwig, bed): 
     """Converts dictionary to ndarray for plotting

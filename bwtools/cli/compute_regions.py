@@ -48,10 +48,8 @@ def compute_regions(bigwig, bedfiles, plot):
     bigwig_split = bigwig.split(',')
 
     stack = regions.regions_mean(bigwig_split, bedfiles_split)
-    print(stack)
     plotarray = regions.create_plotarray2(stack,bigwig_split)
-    print(plotarray)
+ 
     if plot != None:
-        print('Entered plot method')
         regions.plot(ndarray=plotarray, col_names=bedfiles_split, row_names=bigwig_split, output=plot)
     return plotarray 
