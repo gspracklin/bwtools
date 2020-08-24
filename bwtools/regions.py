@@ -19,12 +19,12 @@ def regions_mean(bigwig, bed):
         stack: dictionary of {bigwig, bed : mean}
     """
     stack={}
-    
+
     for i in bed:
         df = pd.read_csv(i, sep='\t', header=None, usecols=[0,1,2])
-        
+
         for j in bigwig:
-            stack[i,j] = np.nanmean(bbi.stackup(j, df['0'], df['1'], df['2'], bins=1))
+            stack[i,j] = np.nanmean(bbi.stackup(j, df[0], df[1], df[2], bins=1))
     return stack
 
 def df_regions_mean(df, cols, bed): 
@@ -71,7 +71,13 @@ def df_regions_mean_list(df, cols, bed):
         listoflists.append(a)
     return listoflists
 
-def create_plotarray(stack, cols, bed): 
+def cp2(stack, bigwig):
+    nd=[]
+    for i in bigwig:
+        nd.append(lookup(stack, i))
+    return nd
+    
+def create_plotarray(stack, bigwig, bed): 
     """Converts dictionary to ndarray for plotting
 
     Args:
@@ -82,51 +88,53 @@ def create_plotarray(stack, cols, bed):
     Returns:
         array : numpy ndarray
     """
+    for i in bigwig:
+        nd.append(lookup(stack, i))
+
     b=[]
     num_cols = len(cols)
     num_rows = len(bed)
     
     #convert dictionary keys to list
     a=list(stack.values())
+    print(a)
     
     #convert list to ndarray
     for i in range(0,num_cols,num_rows):  
         b.append(a[i:num_cols])
-
     return np.array(b)
 
-def plot(ndarray, cols, bed, output=None):
-    """Create matplotlib plot
+def create_plotarray2(stack, bigwig):
+    nd=[]
+    for i in bigwig:
+        nd.append(lookup(stack, i))
+    return nd
 
-    Args:
-        ndarray (ndarray): list of means (bigwigs/rows, bedfile/columns)
-        cols (list): name for the columns   
-        bed (list): name for the rows       
-        output (file name, optional): 'filename.pdf' (or png). Defaults to None.
-    """
+def lookup(d, keyword):
+    plotorder = []
+    k = d.keys()
+    for i in k:
+        if keyword in i:
+            j = d.get(i)
+            plotorder.append(j)
+    return plotorder
+
+
+def plot(ndarray, col_names, row_names,output=None):
     import matplotlib.pyplot as plt
-
     fig, ax = plt.subplots()
     im = ax.imshow(ndarray)
 
     # We want to show all ticks...
-    ax.set_xticks(np.arange(len(cols)))
-    ax.set_yticks(np.arange(len(bed)))
-    # ... and label them with the respective list entries
-    ax.set_xticklabels(cols)
-    ax.set_yticklabels(bed)
+    ax.set_xticks(np.arange(len(col_names)))
+    ax.set_yticks(np.arange(len(row_names)))
+    ax.set_xticklabels(col_names)
+    ax.set_yticklabels(row_names)
 
     # Rotate the tick labels and set their alignment.
     plt.setp(ax.get_xticklabels(), ha="right", rotation=45,
              rotation_mode="anchor")
 
-    # # Loop over data dimensions and create text annotations.
-    # for i in range(len(marks)):
-    #     for j in range(len(subcompartments)):
-    #         text = ax.text(j, i, np.array(b)[i, j],
-    #                        ha="center", va="center", color="w")
-
-#     ax.set_title("RT and E1 in heterochromatin")
     fig.tight_layout()
     plt.colorbar(im)
     if output != None:
