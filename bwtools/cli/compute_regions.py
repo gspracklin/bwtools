@@ -31,9 +31,9 @@ def compute_regions(bigwigs, bedfiles, plot):
     bedfiles_split = bedfiles.split(',')
     bigwigs_split = bigwigs.split(',')
 
-    stack = regions.regionsTwolists(bigwig_split, bedfiles_split)
-    plotarray = regions.create_plotarray(stack,bigwig_split)
+    stack = regions.regionsTwolists(bigwigs_split, bedfiles_split)
+    plotarray = regions.create_plotarray(stack,bigwigs_split)
  
     if plot != None:
-        regions.plot(plotarray, col_names=bedfiles_split, row_names=bigwig_split, output=plot)
+        regions.plot(plotarray, col_names=bedfiles_split, row_names=bigwigs_split, output=plot)
     return plotarray 

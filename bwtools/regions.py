@@ -61,7 +61,7 @@ def regionsOnedf(df, cols, bed):
         a=[]
         df_bed = pd.read_csv(i, sep='\t', header=None, usecols=[0,1,2], names=['chrom', 'start', 'end'])
         overlap = bf.overlap(df_bed, df)
-        df_regions_mean
+    
         for j in cols:
             a.append(overlap[j+'_2'].mean())
         listoflists.append(a)
