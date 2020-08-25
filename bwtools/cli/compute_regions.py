@@ -7,24 +7,12 @@ from . import cli
 @cli.command()
 @click.option(
     "--bedfiles",
-    # multiple=True,
     type=str,
-   # default=[],
-
 )
-# @click.option(
-#     "-v", "--verbose",
-#     help="Enable verbose output",
-#     is_flag=True,
-#     default=False
-# )
 @click.option(
-    "--bigwig", "-bw",
-    help="List of bigwig files. ['test1.bw','test2.bw', ...]",
+    "--bigwigs",
+    help="List of bigwig files (comma sep).",
     type=str,
-    #multiple=True,
-    #default=['test.bed']
-
 )
 # @click.option(
 #     "--array", "-a", 
@@ -37,19 +25,15 @@ from . import cli
     type=str,
     default=None
 )
-# @click.argument('out', 
-#                 type=click.File('w'), 
-#                 default='-', 
-#                 required=False)
 
-def compute_regions(bigwig, bedfiles, plot):
+def compute_regions(bigwigs, bedfiles, plot):
     """Get mean value for regions from bigwig."""
     bedfiles_split = bedfiles.split(',')
-    bigwig_split = bigwig.split(',')
+    bigwigs_split = bigwigs.split(',')
 
-    stack = regions.regions_mean(bigwig_split, bedfiles_split)
-    plotarray = regions.create_plotarray2(stack,bigwig_split)
- 
+    stack = regions.regionsTwolists(bigwig=bigwigs_split, bed=bedfiles_split)
+    plotarray = regions.create_plotarray(stack,bigwigs_split)
+    
     if plot != None:
-        regions.plot(ndarray=plotarray, col_names=bedfiles_split, row_names=bigwig_split, output=plot)
+        regions.plot(plotarray, col_names=bedfiles_split, row_names=bigwig_splits, output=plot)
     return plotarray 
